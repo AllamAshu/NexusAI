@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NexusAI – Register</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f; --surface: #14141e; --border: #2a2a3d;
+      --accent: #7c6af7; --accent2: #4fd1c5;
+      --text: #e8e8f0; --text-muted: #6b6b8a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; padding: 20px;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(79,209,197,0.12), transparent);
+      pointer-events: none;
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px;
+      width: 100%; max-width: 420px; position: relative;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-align: center; margin-bottom: 6px;
+    }
+    .tagline { text-align: center; color: var(--text-muted); font-size: 0.875rem; margin-bottom: 32px; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
+    input[type="text"], input[type="password"] {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; padding: 11px 14px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,106,247,0.12); }
+    .help-text { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+    .submit-btn {
+      width: 100%; padding: 12px;
+      background: linear-gradient(135deg, var(--accent), #5b52d4);
+      border: none; border-radius: 10px; color: #fff;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.925rem;
+      cursor: pointer; margin-top: 8px; transition: opacity 0.2s, transform 0.15s;
+    }
+    .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .alt-link { text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--text-muted); }
+    .alt-link a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .error-list {
+      background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3);
+      border-radius: 8px; padding: 10px 14px; margin-bottom: 16px;
+      font-size: 0.82rem; color: #f87171; list-style: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">✦ NexusAI</div>
+    <p class="tagline">Create your account</p>
+
+    {% if form.errors %}
+    <ul class="error-list">
+      {% for field in form %}{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}{% endfor %}
+      {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}<p class="help-text">{{ field.help_text }}</p>{% endif %}
+      </div>
+      {% endfor %}
+      <button type="submit" class="submit-btn">Create Account →</button>
+    </form>
+
+    <p class="alt-link">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+  </div>
+</body>
+</html>
